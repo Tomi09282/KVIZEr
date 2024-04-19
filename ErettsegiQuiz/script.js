@@ -1,88 +1,107 @@
-document.getElementById('fileInput').addEventListener('change', function(e) {
-  var file = e.target.files[0];
-  if (!file) {
-    return;
-  }
-  
-  var reader = new FileReader();
-  
-  reader.onload = function(event) {
-    var csvData = event.target.result;
-    var rows = csvData.split('\n');
-    var output = document.getElementById('output');
-    output.innerHTML = '';
+function createCardsFromCSV(csvData) {
+  // Split the CSV data into an array of rows
+  var rows = csvData.split('\n');
 
-    for (var i = 1; i < rows.length; i++) { // start from 1 to skip the header row
-      var cells = rows[i].split(';'); // assuming ';' is the delimiter
-      var question = cells[0];
-      var sentence1 = cells[1];
-      var sentence2 = cells[2];
-      var picture1 = 'Images/' + cells[3]; // Correct path for picture1
-      var picture2 = 'Images/' + cells[4]; // Correct path for picture2
-      var picture3 = 'Images/' + cells[5];
+  // Shuffle the rows (excluding the header row)
+  rows = shuffleArray(rows.slice(1));
 
+  // Process each row
+  rows.forEach(row => {
+      // Split the row into an array of cells
+      var cells = row.split(';');
 
-      var card = document.createElement('div');
-      card.className = 'card';
+      // Extract the topic, s values, and picture URLs from the cells
+      var topic = cells[0];
+      var s1 = cells[1];
+      var s2 = cells[2];
+      var s3 = cells[3];
+      var pic1 = cells[4];
+      var pic2 = cells[5];
+      var pic3 = cells[6];
 
-      var heading = document.createElement('h1');
-      heading.textContent = question;
-
-      var img1 = document.createElement('img');
-      img1.src = picture1;
-
-      var img2 = document.createElement('img');
-      img2.src = picture2;
-
-      var img3 = document.createElement('img');
-      img3.src = picture3;
-
-      var buttonsDiv = document.createElement('div');
-      buttonsDiv.className = 'buttons';
-
-      var button1 = document.createElement('button');
-      button1.textContent = sentence1;
-
-      var button2 = document.createElement('button');
-      button2.textContent = sentence2;
-
-      if (sentence1 && sentence2) {
-        button1.addEventListener('click', function() {
-          checkSentences(this, button2);
-        });
-
-        button2.addEventListener('click', function() {
-          checkSentences(button1, this);
-        });
-      }
-
-      buttonsDiv.appendChild(button1);
-      buttonsDiv.appendChild(button2);
-
-      card.appendChild(heading);
-      card.appendChild(img1);
-      card.appendChild(img2);
-      card.appendChild(img3);
-      card.appendChild(buttonsDiv);
-
-      output.appendChild(card);
-    }
-  };
-  
-  reader.readAsText(file);
-});
-
-function checkSentences(button1, button2) {
-  if (button1.textContent === button2.textContent) {
-    button1.classList.add('correct');
-    button2.classList.add('correct');
-  } else {
-    button1.classList.add('incorrect');
-    button2.classList.add('incorrect');
-  }
-
-  var buttons = document.querySelectorAll('.buttons button');
-  buttons.forEach(function(button) {
-    button.disabled = true;
+      // Create a card for the topic with the correct and incorrect s values and their corresponding pictures
+      createCard(topic, s1, pic1, s2, pic2, s3, pic3);
   });
 }
+
+function createCard(topic, correctS, correctPic, incorrectS) {
+  var card = document.createElement('div');
+  card.className = 'card';
+
+  var heading = document.createElement('h1');
+  heading.textContent = topic;
+
+  var questionImg = document.createElement('img');
+  questionImg.src = correctPic;
+
+  var correctButton = createButton(correctS, true);
+  var incorrectButton = createButton(incorrectS, false);
+
+  card.appendChild(heading);
+  card.appendChild(questionImg);
+
+  if (randomIntFromInterval(1, 2) == 1) {
+    card.appendChild(correctButton);
+    card.appendChild(incorrectButton);
+  } else{
+    card.appendChild(incorrectButton);
+    card.appendChild(correctButton);
+  }
+
+
+  document.getElementById('output').appendChild(card);
+}
+
+function createButton(text, isCorrect) {
+  var button = document.createElement('button');
+  button.textContent = text;
+  button.addEventListener('click', function() {
+      checkAnswer(this, isCorrect);
+  });
+  return button;
+}
+
+function checkAnswer(clickedButton, isCorrect) {
+  var buttons = clickedButton.parentNode.querySelectorAll('button');
+  buttons.forEach(function(button) {
+      if (button === clickedButton) {
+          if (isCorrect) {
+              button.classList.add('correct');
+          } else {
+              button.classList.add('incorrect');
+          }
+      } else {
+          button.classList.add('incorrect');
+      }
+      button.disabled = true;
+  });
+}
+
+// Helper function to shuffle array
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Fetch the CSV file
+fetch('data/data.csv')
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Failed to fetch the CSV file.');
+      }
+      return response.text();
+  })
+  .then(csvData => {
+      createCardsFromCSV(csvData);
+  })
+  .catch(error => {
+      console.error('An error occurred while fetching the CSV file:', error);
+  });
+
+  function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+  
