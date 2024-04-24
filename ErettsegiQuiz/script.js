@@ -1,16 +1,23 @@
 function createCardsFromCSV(csvData) {
-  // Split the CSV data into an array of rows
+  /*
+  ENL on top, szemedbe hozok port
+  But I miss UK, deliverin' box
+  Annyit tudok, hogy stickin' up plugs
+  Amíg otthon szívtál, én kosaraztam
+  Had me back on the block, like livin' with thugs
+  How we made those P's for dinner and lunch
+  */
   var rows = csvData.split('\n');
 
-  // Shuffle the rows (excluding the header row)
+  
   rows = shuffleArray(rows.slice(1));
 
-  // Process each row
+  
   rows.forEach(row => {
-      // Split the row into an array of cells
+      
       var cells = row.split(';');
 
-      // Extract the topic, s values, and picture URLs from the cells
+      
       var topic = cells[0];
       var s1 = cells[1];
       var s2 = cells[2];
@@ -19,7 +26,7 @@ function createCardsFromCSV(csvData) {
       var pic2 = cells[5];
       var pic3 = cells[6];
 
-      // Create a card for the topic with the correct and incorrect s values and their corresponding pictures
+      
       createCard(topic, s1, pic1, s2, pic2, s3, pic3);
   });
 }
@@ -77,7 +84,7 @@ function checkAnswer(clickedButton, isCorrect) {
   });
 }
 
-// Helper function to shuffle array
+
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -86,7 +93,7 @@ function shuffleArray(array) {
   return array;
 }
 
-// Fetch the CSV file nibba
+
 fetch('data/data.csv')
   .then(response => {
       if (!response.ok) {
@@ -101,7 +108,7 @@ fetch('data/data.csv')
       console.error('An error occurred while fetching the CSV file:', error);
   });
 
-  function randomIntFromInterval(min, max) { // min and max included 
+  function randomIntFromInterval(min, max) { 
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
   
