@@ -5,7 +5,12 @@ body {
   background-image: url("images/logo.png");
   backdrop-filter: blur(5px);
 }
-/* Navbar styles */
+/*  Baby, jól áll a Nike, szállj ki, utca végen a Gucci Store
+    Bad Baby nem bárki, a legrealebb nő csak velem passzol
+    Gól assistom mint Pogba, Didier Drogba, karriered romba
+    Honnan tudta kinél a kóla, valaki biztos elmondta
+    Tizenkettőt ütött az óra, a ninóval nem vagyunk jóba
+    Úgy érzem magam mint Szoboszlai, lábamban van a szezon gólja */
 
 .card-container {
   display: flex;
@@ -13,17 +18,17 @@ body {
   justify-content: center;
   gap: 20px;
   margin: 0 auto;
-  max-width: 100%; /* Adjusted to full width for mobile */
+  max-width: 100%; 
 }
 
 .card {
-  width: 100%; /* Adjusted to full width for mobile */
+  width: 100%; 
   border-radius: 5px;
   padding: 20px;
   box-sizing: border-box;
   background-color: #fff;
   color: rgb(87, 200, 252);
-  margin-bottom: 20px; /* Added margin between cards */
+  margin-bottom: 20px; 
 }
 
 .card h1 {
@@ -67,7 +72,7 @@ body {
   border: black 5px solid;
 }
 
-/* Media query for larger screens */
+
 @media screen and (min-width: 769px) {
   .card {
       width: calc(50% - 20px);
