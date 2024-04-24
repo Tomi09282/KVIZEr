@@ -86,7 +86,7 @@ function shuffleArray(array) {
   return array;
 }
 
-// Fetch the CSV file
+// Fetch the CSV file nibba
 fetch('data/data.csv')
   .then(response => {
       if (!response.ok) {
