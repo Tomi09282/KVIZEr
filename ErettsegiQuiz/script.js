@@ -39,7 +39,7 @@ function createCard(topic, correctS, correctPic, incorrectS) {
   heading.textContent = topic;
 
   var questionImg = document.createElement('img');
-  questionImg.src = correctPic;
+  questionImg.src = 'images/' + correctPic;
 
   var correctButton = createButton(correctS, true);
   var incorrectButton = createButton(incorrectS, false);
